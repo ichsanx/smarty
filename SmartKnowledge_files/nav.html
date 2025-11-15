@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://10.62.176.49/smarty/nav.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	
+	<meta name="robots" content="noindex,follow">
+	<script src="./jquery.js" type="text/javascript"></script>
+	<script src="./jquery-ui.custom.js" type="text/javascript"></script>
+
+	<link href="./ui.fancytree.css" rel="stylesheet" type="text/css">
+	<script src="./jquery.fancytree.js" type="text/javascript"></script>
+	<script src="./sample.js" type="text/javascript"></script>
+	<title>Smart Knowledge Nav</title>
+
+<style type="text/css">
+body {
+	background-color: #39414A;
+	color: white;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: smaller;
+	background-image: url("nav_bg.png");
+	background-repeat: repeat-x;
+}
+div#tree {
+	position: absolute;
+	height: 95%;
+	width: 95%;
+	padding: 5px;
+	margin-right: 16px;
+}
+ul.fancytree-container {
+	height: 100%;
+	width: 100%;
+	background-color: transparent;
+}
+span.fancytree-node span.fancytree-title {
+	color: white;
+	text-decoration: none;
+}
+span.fancytree-focused span.fancytree-title {
+	outline-color: white;
+}
+span.fancytree-node:hover span.fancytree-title,
+span.fancytree-active span.fancytree-title,
+span.fancytree-active.fancytree-focused span.fancytree-title,
+.fancytree-treefocus span.fancytree-title:hover,
+.fancytree-treefocus span.fancytree-active span.fancytree-title {
+	color: #39414A;
+}
+span.external span.fancytree-title:after {
+	content: "";
+	background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAMAAAC67D+PAAAAFVBMVEVmmcwzmcyZzP8AZswAZv////////9E6giVAAAAB3RSTlP///////8AGksDRgAAADhJREFUGFcly0ESAEAEA0Ei6/9P3sEcVB8kmrwFyni0bOeyyDpy9JTLEaOhQq7Ongf5FeMhHS/4AVnsAZubxDVmAAAAAElFTkSuQmCC") 100% 50% no-repeat;
+	padding-right: 13px;
+}
+/* Remove system outline for focused container */
+.ui-fancytree.fancytree-container:focus {
+	outline: none;
+}
+.ui-fancytree.fancytree-container {
+	border: none;
+}
+</style>
+
+<script type="text/javascript">
+$(function(){
+	// --- Initialize sample trees
+	$("#tree").fancytree({
+		autoActivate: false, // we use scheduleAction()
+		autoCollapse: true,
+//			autoFocus: true,
+		autoScroll: true,
+		clickFolderMode: 3, // expand with single click
+		minExpandLevel: 2,
+		tabbable: false, // we don't want the focus frame
+		// scrollParent: null, // use $container
+		focus: function(event, data) {
+			var node = data.node;
+			// Auto-activate focused node after 1 second
+			if(node.data.href){
+				node.scheduleAction("activate", 1000);
+			} 
+		},
+		blur: function(event, data) {
+			data.node.scheduleAction("cancel");
+		},
+		activate: function(event, data){
+			var node = data.node,
+				orgEvent = data.originalEvent || {};
+
+			if(node.data.href){
+				window.open(node.data.href, (orgEvent.ctrlKey || orgEvent.metaKey) ? "_blank" : node.data.target);
+			}
+			if( window.parent &&  parent.history && parent.history.pushState ) {
+				// Add #HREF to URL without actually loading content
+				parent.history.pushState({title: node.title}, "", "#" + (node.data.href || ""));
+			}
+		},
+		click: function(event, data){ // allow re-loads
+			var node = data.node,
+				orgEvent = data.originalEvent;
+
+			if(node.isActive() && node.data.href){
+				// data.tree.reactivate();
+				window.open(node.data.href, (orgEvent.ctrlKey || orgEvent.metaKey) ? "_blank" : node.data.target);
+			}
+		}
+	});
+	// On page load, activate node if node.data.href matches the url#href
+	var tree = $(":ui-fancytree").fancytree("getTree"),
+		frameHash = window.parent && window.parent.location.hash;
+
+	if( frameHash ) {
+		frameHash = frameHash.replace("#", "");
+		tree.visit(function(n) {
+			if( n.data.href && n.data.href === frameHash ) {
+				n.setActive();
+				return false; // done: break traversal
+			}
+		});
+	}
+});
+
+</script>
+
+</head>
+
+<body marginwidth="0" marginheight="0">
+	<div id="tree">
+	<ul class="ui-fancytree-source ui-helper-hidden">
+	<li class="folder expanded">PRODUK KNOWLEDGE
+		<ul>
+				<li class="folder">INDIHOME
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/produk/indihome/Deskripsi/Deskripsi%20Indihome.htm">Deskripsi</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/produk/indihome/Infrastruktur/Infrastruktur%20Indihome.htm">Infrastruktur</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/produk/indihome/Perangkat%20IndiHome/Perangkat%20Indihome.htm">Perangkat IndiHome</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/produk/indihome/ONT/ONT.htm">ONT (Optical Network Terminal) Fiber</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/produk/indihome/STB/STB.htm">STB (Set Top Box)</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/produk/indihome/My%20IndiHome/FAQ%20MY%20INDIHOME.htm">FAQ MyIndiHome.apk</a>
+				
+		</li></ul>
+	</li><li class="folder">INTERNET
+		<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/produk/Internet/Deskripsi/Deskripsi_Internet.html">Deskripsi</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/produk/Internet/Infrastruktur/Infra.html">Infrastruktur</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/produk/Internet/Pengenalan%20Internet/Pengenalan%20INTERNET.htm">Pengenalan Internet</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/produk/Internet/ONT/Pengenalan%20ONT.html">ONT (Optical Network Terminal) Fiber</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/produk/Internet/MODEM/Pengenalan.htm">Modem DSL</a>
+				</li><li class="folder expanded">Gadget dan PC/Laptop
+					<ul>
+						<li><a target="content" href="http://10.62.176.49/smarty/sample-rtl.html">Android Phone/Tablet</a>
+						</li><li><a target="content" href="http://10.62.176.49/smarty/sample-form.html">IPhone</a>
+						</li><li><a target="content" href="http://10.62.176.49/smarty/sample-multiline.html">Windows PC</a>
+						</li><li><a target="content" href="http://10.62.176.49/smarty/sample-multi-dnd.html">Mac OS X</a>
+						</li><li><a target="content" href="http://10.62.176.49/smarty/sample-scroll.html">Linux OS</a>
+					</li></ul>
+		</li></ul>
+	</li><li class="folder">IPTV / USEETV
+		<ul>
+			<li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/deskripsi/useetv_cable.html">Deskripsi</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/infra/infrastruktur.html">Infrastruktur</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/stb/stb2.html">STB (Set Top Box)</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/epg/menu_epg.html">EPG (Electronic Progammable Guide)</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/koderor/kode_eror.html">Kode Error USeeTV</a>
+			</li><li class="folder expanded">Fitur USeeTV
+				<ul>
+					<li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/vod/video_deman.html">VOD (Video On Demand)</a>
+					</li><li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/tvod/tvondeman.html">TVOD (TV On Demand)</a>
+					</li><li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/tvlive/TV%20Live.html">Live TV</a>
+					</li><li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/storage/Storage.html">Storage</a>
+					</li><li><a target="content" href="http://10.62.176.49/smarty/produk/useetv/karaoke/karaoke.html">Karaoke</a>
+				</li></ul>
+		</li></ul>
+	</li><li class="folder">TELEPON RUMAH
+		<ul>
+			<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Deskripsi</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-default.html">Infrastruktur</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-multi-ext.html">IKR/IKG</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-ext-bootstrap.html">Telepon Jaringan Fiber</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-source.html">TelkomLOKAL</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-events.html">TelkomSLJJ</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-configurator.html">TelkomSLI 007</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-iframe.html">TelkomGlobal</a>
+			</li><li class="folder">Fitur Telepon
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-ext-childcounter.html">KLIP</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/sample-ext-columnview.html">Lacak</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/sample-ext-menu.html">Hunting</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/sample-ext-dnd.html">Andara</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/sample-ext-filter.html">Call Waiting</a>
+				</li></ul>
+		</li></ul>
+	
+	</li><li class="folder">WIFI.ID
+		<ul>
+			<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Deskripsi</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-default.html">Infrastruktur</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-multi-ext.html">Lokasi Wifi.id </a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/sample-ext-bootstrap.html">Cara Top Up</a>
+		</li></ul>
+	</li></ul>
+	</li><li class="folder expanded">PAKET INDIHOME
+		<ul>
+			<li class="folder">BARU (TW 1 2016)
+				<ul>
+					<li class="folder">Paket Indihome Reguler
+							<ul>
+							<li><a target="content" href="http://10.62.176.49/smarty/produk/PAKET%20INDIHOME/Baru%20(TW1%202016)/IndiHome%20reguler%20TW1%202016/Paket%20Lite%20(non%20fiber)/IndiHome%20Paket%20Lite%20unlimited%20(non%20fiber).htm">Paket Lite (Non Fiber)</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/PAKET%20INDIHOME/Baru%20(TW1%202016)/IndiHome%20reguler%20TW1%202016/Paket%20Fiber%20(FUP)/IndiHome%20Fiber%20FUP.htm">Paket Fiber (FUP)</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/PAKET%20INDIHOME/Baru%20(TW1%202016)/IndiHome%20reguler%20TW1%202016/Paket%20Solution%20(FUP)/IndiHome%20Paket%20Solution%20(FUP).htm">Paket Solution (FUP)</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/PAKET%20INDIHOME/Baru%20(TW1%202016)/IndiHome%20reguler%20TW1%202016/Paket%20Pro/IndiHome%20paket%20pro.htm">Paket Pro (Unlimited)</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/PAKET%20INDIHOME/Baru%20(TW1%202016)/IndiHome%20reguler%20TW1%202016/Paket%20IP%20Statik/IndiHome%20IP%20Statik.htm">Paket Ip Statik</a>
+							</li></ul>
+						</li><li class="folder">Paket IndiHome Perintis
+							<ul>
+							<li><a target="content" href="http://10.62.176.49/smarty/produk/PAKET%20INDIHOME/Baru%20(TW1%202016)/Paket%20Perintis/IndiHome%20Paket%20Perintis.htm">Paket IndiHome Perintis</a>
+							</li></ul>
+						</li><li class="folder">Paket IndiHome SKY
+							<ul>
+							<li><a target="content" href="http://10.62.176.49/smarty/produk/PAKET%20INDIHOME/Baru%20(TW1%202016)/Indihome%20sky/IndiHome%20Sky.htm">Paket IndiHome SKY</a>
+							</li></ul>
+						</li><li class="folder">Paket IndiHome Komunitas
+							<ul>
+							<li><a target="content" href="http://10.62.176.49/smarty/produk/PAKET%20INDIHOME/Baru%20(TW1%202016)/Paket%20Komunitas/Paket%20Komunitas.htm">Paket Indihome Komunitas</a>
+							</li></ul>
+						</li><li class="folder">Paket Indihome KARYAWAN
+							<ul>
+							<li><a target="content" href="http://10.62.176.49/smarty/produk/PAKET%20INDIHOME/Baru%20(TW1%202016)/Paket%20Karyawan/IndiHome%20Paket%20Karyawan.htm">Paket Indihome KARYAWAN</a>
+							</li></ul>  
+						</li><li class="folder">Paket Indihome Add-On
+							<ul> 
+							<li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/WIFI.ID%20SEAMLESS/WIFI.ID%20SEAMLESS.html">WIFI.ID SEAMLESS</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/Indihome%20Telepon%20Mania/Indihome%20Telepon%20Mania.html">Indihome Telepon Mania</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/INDIHOME%20Telkomsel%20Mania/INDIHOME%20Telkomsel%20Mania.htm">Indihome Telkomsel Mania</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/Indihome%20Global%20Call/Indihome%20Global%20Call.html">Indihome Global Call</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/MelOn/Melon.htm">MelOn</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/AntiVirus/AntiVirus.htm">Antivirus</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/Indihome%20View/INDIHOME%20VIEW.htm">IndihomeView</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/Indihome%20Store/INDIHOME%20STORE.htm">IndihomeStore</a> 
+							</li></ul> 
+						</li><li class="folder">Paket MINI PACK USEETV
+							<ul>
+							<li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/IndiMovie1/IndiMovie1.html">IndiMovie1</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/Indimovie%202/IndiMovie2.html">IndiMovie2</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/Inditainment%201/Inditainment1.htm">Inditainment1</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/Inditainment%202/Inditainment%202.htm">Inditainment2</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/IndiKids/IndiKids.htm">IndiKids</a>
+							</li><li><a target="content" href="http://10.62.176.49/smarty/produk/MiniPackUseeTv/IndiNews/IndiNews.htm">IndiNews</a>
+							</li></ul>
+				</li></ul>
+			</li><li class="folder">LAMA
+				<ul>
+					<li class="folder">2015
+					<ul>
+						<li class="folder">TW1
+						<ul>
+							<li class="folder">Paket Indihome Reguler
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Lite</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Starter</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Basic</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Pro</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Ip Statik</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome Perintis
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome Perintis</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome SKY
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome SKY</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome VISA
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome VISA</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome LG
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome LG</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome SAMSUNG
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome SAMSUNG</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome DJARUM
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome DJARUM</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome KARYAWAN
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome KARYAWAN</a>
+								</li></ul>
+							</li><li class="folder">Paket MINI PACK USEETV
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiMovie 1</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiMovie 2</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Inditainment 1</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Inditainment 2</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiKids</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Indinews</a>
+								</li></ul>
+						</li></ul>
+						</li><li class="folder">TW2
+						<ul>
+							<li class="folder">Paket Indihome Reguler
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Lite</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Starter</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Basic</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Pro</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Ip Statik</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome Perintis
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome Perintis</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome SKY
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome SKY</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome VISA
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome VISA</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome LG
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome LG</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome SAMSUNG
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome SAMSUNG</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome DJARUM
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome DJARUM</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome KARYAWAN
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome KARYAWAN</a>
+								</li></ul>
+							</li><li class="folder">Paket MINI PACK USEETV
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiMovie 1</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiMovie 2</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Inditainment 1</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Inditainment 2</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiKids</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Indinews</a>
+								</li></ul>
+						</li></ul>
+						</li><li class="folder">TW3
+						<ul>
+							<li class="folder">Paket Indihome Reguler
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Lite</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Starter</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Basic</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Pro</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Ip Statik</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome Perintis
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome Perintis</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome SKY
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome SKY</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome VISA 
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome VISA</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome LG
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome LG</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome SAMSUNG
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome SAMSUNG</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome DJARUM
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome DJARUM</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome KARYAWAN
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome KARYAWAN</a>
+								</li></ul>
+							</li><li class="folder">Paket MINI PACK USEETV
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiMovie 1</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiMovie 2</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Inditainment 1</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Inditainment 2</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiKids</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Indinews</a>
+								</li></ul>
+						</li></ul>
+						</li><li class="folder">TW4
+						<ul>
+							<li class="folder">Paket Indihome Reguler
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Lite</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Starter</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Basic</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Pro</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Ip Statik</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome Perintis
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome Perintis</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome SKY
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome SKY</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome VISA
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome VISA</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome LG
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome LG</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome SAMSUNG
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome SAMSUNG</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome DJARUM
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome DJARUM</a>
+								</li></ul>
+							</li><li class="folder">Paket Indihome KARYAWAN
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Paket Indihome KARYAWAN</a>
+								</li></ul>
+							</li><li class="folder">Paket MINI PACK USEETV
+								<ul>
+								<li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiMovie 1</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiMovie 2</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Inditainment 1</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Inditainment 2</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">IndiKids</a>
+								</li><li><a target="content" href="http://10.62.176.49/smarty/welcome.html">Indinews</a>
+								</li></ul>
+						</li></ul>
+					</li></ul>
+				</li></ul>
+		</li></ul>
+	</li><li class="folder expanded">TOOLS 147
+		<ul>
+			<li class="folder">ISISKA
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/produk/indihome/Deskripsi%20Indihome.htm">Deskripsi</a>
+				</li><li><a target="content" href="http://10.62.176.49/smarty/sample-3rd-ui-contextmenu.html">Infrastruktur</a>
+				</li></ul>
+			</li><li class="folder">CX RIGHT NOW
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">NOSSA SCCD
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">IBOOSTER
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">WEBCARE
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">STARCLICK
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">EPAYMENT
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">CS TOOLS dan OCN TOOLS
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">KMS
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">IDEAS
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">SRAS
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">NONATERO
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">RIHANA
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">WIKIPRO
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">ASSURANCE TOOLS
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">IFES
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+			</li><li class="folder">NICE
+				<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-accordion.html">Deskripsi</a>
+				</li></ul>
+
+		</li></ul>
+	</li><li class="folder expanded">COMPLAINT HANDLING
+		<ul>
+			<li class="folder">INDIHOME
+			<ul>
+				<li><a target="content" href="http://10.62.176.49/3rd-party/extensions/contextmenu/contextmenu.html">Tidak Bisa Koneksi</a>
+				</li><li><a target="content" href="http://10.62.176.49/3rd-party/extensions/hotkeys/hotkeys.html">Tidak Bisa Browsing</a>
+			</li></ul>
+			</li><li class="folder">INTERNET
+			<ul>
+				<li><a target="content" href="http://10.62.176.49/smarty/sample-3rd-ui-contextmenu.html">ui-contextmenu</a>
+			</li></ul>
+		</li></ul>
+	</li><li class="folder">Konfigurasi Setting
+		<ul>
+			<li><a target="content" href="http://10.62.176.49/smarty/produk/Konfigurasi%20setting/Setting%20ONT%20FiberHome/Setting%20ONT%20FiberHome.htm">Setting ONT Fiber Home</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/produk/Konfigurasi%20setting/Setting%20ONT%20HUAWEI/Setting%20ONT%20HUAWEI.htm">Setting ONT HUAWEI</a>
+			</li><li><a target="content" href="http://10.62.176.49/smarty/produk/Konfigurasi%20setting/Setting%20ONT%20ZTE%20F660/Konfigurasi%20Setting%20ONT%20ZTE%20F660.htm">Setting ONT ZTE F660</a>
+			</li></ul>
+	</li><li class="folder">RANGKUMAN
+		<ul>
+			<li><a target="content" href="http://10.62.176.49/smarty/produk/DAFTAR%20SINGKATAN%20DAN%20ISTILAH/DAFTAR%20SINGKATAN%20DAN%20ISTILAH.htm">DAFTAR SINGKATAN / ISTILAH</a>
+			</li></ul>
+	</li></ul>
+	<ul class="ui-fancytree fancytree-container fancytree-plain" tabindex="-1"><li class=""><span class="fancytree-node fancytree-expanded fancytree-folder fancytree-has-children fancytree-exp-e fancytree-ico-ef"><span class="fancytree-icon"></span><span class="fancytree-title">PRODUK KNOWLEDGE</span></span><ul><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">INDIHOME</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">INTERNET</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">IPTV / USEETV</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">TELEPON RUMAH</span></span></li><li class="fancytree-lastsib"><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-lastsib fancytree-exp-cl fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">WIFI.ID</span></span></li></ul></li><li class=""><span class="fancytree-node fancytree-expanded fancytree-folder fancytree-has-children fancytree-exp-e fancytree-ico-ef"><span class="fancytree-icon"></span><span class="fancytree-title">PAKET INDIHOME</span></span><ul><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">BARU (TW 1 2016)</span></span></li><li class="fancytree-lastsib"><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-lastsib fancytree-exp-cl fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">LAMA</span></span></li></ul></li><li class=""><span class="fancytree-node fancytree-expanded fancytree-folder fancytree-has-children fancytree-exp-e fancytree-ico-ef"><span class="fancytree-icon"></span><span class="fancytree-title">TOOLS 147</span></span><ul><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">ISISKA</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">CX RIGHT NOW</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">NOSSA SCCD</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">IBOOSTER</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">WEBCARE</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">STARCLICK</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">EPAYMENT</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">CS TOOLS dan OCN TOOLS</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">KMS</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">IDEAS</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">SRAS</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">NONATERO</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">RIHANA</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">WIKIPRO</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">ASSURANCE TOOLS</span></span></li><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">IFES</span></span></li><li class="fancytree-lastsib"><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-lastsib fancytree-exp-cl fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">NICE</span></span></li></ul></li><li class=""><span class="fancytree-node fancytree-expanded fancytree-folder fancytree-has-children fancytree-exp-e fancytree-ico-ef"><span class="fancytree-icon"></span><span class="fancytree-title">COMPLAINT HANDLING</span></span><ul><li class=""><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-exp-c fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">INDIHOME</span></span></li><li class="fancytree-lastsib"><span class="fancytree-node fancytree-folder fancytree-has-children fancytree-lastsib fancytree-exp-cl fancytree-ico-cf"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">INTERNET</span></span></li></ul></li><li class=""><span class="fancytree-node fancytree-expanded fancytree-folder fancytree-has-children fancytree-exp-e fancytree-ico-ef"><span class="fancytree-icon"></span><span class="fancytree-title">Konfigurasi Setting</span></span><ul><li class=""><span class="fancytree-node fancytree-exp-n fancytree-ico-c"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">Setting ONT Fiber Home</span></span></li><li class=""><span class="fancytree-node fancytree-exp-n fancytree-ico-c"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">Setting ONT HUAWEI</span></span></li><li class="fancytree-lastsib"><span class="fancytree-node fancytree-lastsib fancytree-exp-nl fancytree-ico-c"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">Setting ONT ZTE F660</span></span></li></ul></li><li class="fancytree-lastsib"><span class="fancytree-node fancytree-expanded fancytree-folder fancytree-has-children fancytree-lastsib fancytree-exp-el fancytree-ico-ef"><span class="fancytree-icon"></span><span class="fancytree-title">RANGKUMAN</span></span><ul><li class="fancytree-lastsib"><span class="fancytree-node fancytree-lastsib fancytree-exp-nl fancytree-ico-c"><span class="fancytree-expander"></span><span class="fancytree-icon"></span><span class="fancytree-title">DAFTAR SINGKATAN / ISTILAH</span></span></li></ul></li></ul></div>
+
+
+</body></html>
